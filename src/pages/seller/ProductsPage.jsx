@@ -266,7 +266,15 @@ const ProductsPage = () => {
       setDeleteTarget(null);
       refetch();
     } catch (err) {
-      sileo.error({ title: 'Error al eliminar producto', description: err.message || 'Ocurrió un error inesperado.' });
+      const msg = err.message || '';
+      if (msg.includes('foreign key') || msg.includes('violates') || err.status === 409) {
+        sileo.error({
+          title: 'No se puede eliminar',
+          description: `"${deleteTarget.name}" tiene facturas asociadas. Puedes desactivarlo en su lugar.`,
+        });
+      } else {
+        sileo.error({ title: 'Error al eliminar producto', description: msg || 'Ocurrió un error inesperado.' });
+      }
     } finally {
       setDeleting(false);
     }

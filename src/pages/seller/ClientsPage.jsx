@@ -268,7 +268,15 @@ const ClientsPage = () => {
       setDeleteTarget(null);
       refetch();
     } catch (err) {
-      sileo.error({ title: 'Error al eliminar cliente', description: err.message || 'Ocurrió un error inesperado.' });
+      const msg = err.message || '';
+      if (msg.includes('foreign key') || msg.includes('violates') || err.status === 409) {
+        sileo.error({
+          title: 'No se puede eliminar',
+          description: `"${deleteTarget.names || deleteTarget.company || ''}" tiene facturas asociadas. No es posible eliminarlo.`,
+        });
+      } else {
+        sileo.error({ title: 'Error al eliminar cliente', description: msg || 'Ocurrió un error inesperado.' });
+      }
     } finally {
       setDeleting(false);
     }
