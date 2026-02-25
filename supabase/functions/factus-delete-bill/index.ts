@@ -102,10 +102,18 @@ serve(async (req: Request) => {
 
     // Update local record to 'deleted' status
     if (invoiceId) {
-      await supabase
+      console.log(`[factus-delete-bill] Updating invoice ${invoiceId} status to 'deleted'`);
+      const { data: updateData, error: updateError } = await supabase
         .from('invoices')
         .update({ status: 'deleted' })
-        .eq('id', invoiceId);
+        .eq('id', invoiceId)
+        .select('id, status');
+
+      if (updateError) {
+        console.error('[factus-delete-bill] DB update error:', updateError);
+      } else {
+        console.log('[factus-delete-bill] DB update result:', JSON.stringify(updateData));
+      }
     }
 
     console.log(`[factus-delete-bill] Successfully deleted: ${referenceCode}`);

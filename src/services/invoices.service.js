@@ -178,6 +178,14 @@ const invoicesService = {
     if (error) throw error;
   },
 
+  async updateStatus(id, status) {
+    const { error } = await supabase
+      .from('invoices')
+      .update({ status })
+      .eq('id', id);
+    if (error) throw error;
+  },
+
   async getAll(documentType = 'invoice') {
     const { data, error } = await supabase
       .from('invoices')
