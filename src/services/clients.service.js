@@ -44,6 +44,14 @@ const clientsService = {
   },
 
   async delete(id) {
+    // Check if client has invoices before attempting delete
+    const { count } = await supabase
+      .from('invoices')
+      .select('id', { count: 'exact', head: true })
+      .eq('client_id', id);
+    if (count > 0) {
+      throw new Error('Este cliente tiene facturas asociadas. No es posible eliminarlo.');
+    }
     const { error } = await supabase
       .from('clients')
       .delete()

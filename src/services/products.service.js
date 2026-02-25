@@ -64,6 +64,14 @@ const productsService = {
   },
 
   async delete(id) {
+    // Check if product has invoice items before attempting delete
+    const { count } = await supabase
+      .from('invoice_items')
+      .select('id', { count: 'exact', head: true })
+      .eq('product_id', id);
+    if (count > 0) {
+      throw new Error('Este producto tiene facturas asociadas. Puedes desactivarlo en su lugar.');
+    }
     const { error } = await supabase
       .from('products')
       .delete()
