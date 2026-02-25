@@ -87,7 +87,7 @@ const ClientCard = ({ client, onDelete }) => {
 
 
   return (
-    <div className="card-interactive rounded-card bg-white dark:bg-gray-800 shadow-card overflow-hidden">
+    <div className="card-interactive flex h-full flex-col rounded-card bg-white dark:bg-gray-800 shadow-card overflow-hidden">
       {/* Header with avatar */}
       <div className="flex items-start gap-3 p-4 pb-3">
         <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-sm font-bold ${getAvatarColor(client.id)}`}>
@@ -109,7 +109,7 @@ const ClientCard = ({ client, onDelete }) => {
       </div>
 
       {/* Contact info — clickable */}
-      <div className="space-y-0.5 border-t border-gray-50 px-4 py-2.5 dark:border-gray-700/50">
+      <div className="flex-1 space-y-0.5 border-t border-gray-50 px-4 py-2.5 dark:border-gray-700/50">
         {client.company && client.names && (
           <p className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300 min-w-0">
             <Building2 className="h-3.5 w-3.5 shrink-0 text-gray-400 dark:text-gray-500" />

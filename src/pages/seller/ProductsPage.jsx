@@ -91,7 +91,7 @@ const ProductCard = ({ product, onDelete, onToggleActive }) => {
   const taxColor = TAX_COLORS[product.tax_rate] || TAX_COLORS['19.00'];
 
   return (
-    <div className={`card-interactive overflow-hidden rounded-card bg-white dark:bg-gray-800 shadow-card ${!isActive ? 'opacity-70' : ''}`}>
+    <div className={`card-interactive flex h-full flex-col overflow-hidden rounded-card bg-white dark:bg-gray-800 shadow-card ${!isActive ? 'opacity-70' : ''}`}>
       {/* Price banner */}
       <div className={`flex items-center justify-between px-4 py-2.5 ${
         isActive
@@ -107,7 +107,7 @@ const ProductCard = ({ product, onDelete, onToggleActive }) => {
       </div>
 
       {/* Info */}
-      <div className="p-4 pb-3">
+      <div className="flex-1 p-4 pb-3">
         <div className="flex items-start justify-between gap-2">
           <div className="min-w-0 flex-1">
             <h3 className="truncate font-outfit font-bold text-gray-900 dark:text-white">{product.name}</h3>
@@ -120,7 +120,7 @@ const ProductCard = ({ product, onDelete, onToggleActive }) => {
       </div>
 
       {/* Footer: toggle + actions */}
-      <div className="flex items-center justify-between border-t border-gray-50 px-4 py-2.5 dark:border-gray-700/50">
+      <div className="mt-auto flex items-center justify-between border-t border-gray-50 px-4 py-2.5 dark:border-gray-700/50">
         <div className="flex items-center gap-2">
           <ToggleSwitch
             checked={isActive}
