@@ -83,7 +83,9 @@ serve(async (req: Request) => {
     let factusResult: any;
     try { factusResult = JSON.parse(factusText); } catch { factusResult = { raw: factusText }; }
 
-    if (!factusResponse.ok) {
+    // If FACTUS returns 404, the bill doesn't exist there (already deleted or never sent).
+    // In that case, still clean up the local record.
+    if (!factusResponse.ok && factusResponse.status !== 404) {
       console.error('[factus-delete-bill] FACTUS error:', factusResponse.status, factusText);
       return new Response(
         JSON.stringify({
@@ -92,6 +94,10 @@ serve(async (req: Request) => {
         }),
         { status: factusResponse.status, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
+    }
+
+    if (factusResponse.status === 404) {
+      console.log(`[factus-delete-bill] Bill not found in FACTUS (already deleted or never sent): ${referenceCode}`);
     }
 
     // Update local record to 'deleted' status
@@ -107,7 +113,9 @@ serve(async (req: Request) => {
     return new Response(
       JSON.stringify({
         success: true,
-        message: factusResult.message || 'Factura eliminada de FACTUS exitosamente',
+        message: factusResponse.status === 404
+          ? 'Factura no existía en FACTUS, registro local eliminado'
+          : (factusResult.message || 'Factura eliminada exitosamente'),
       }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );

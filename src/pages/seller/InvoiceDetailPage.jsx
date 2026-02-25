@@ -140,9 +140,8 @@ const InvoiceDetailPage = () => {
     setDeletingFromFactus(true);
     try {
       await factusService.deleteUnvalidatedBill(invoice.reference_code, invoice.id);
-      sileo.success({ title: 'Factura eliminada de FACTUS', description: 'La factura fue removida del sistema FACTUS correctamente.' });
-      const updated = await invoicesService.getById(id);
-      setInvoice(updated);
+      sileo.success({ title: 'Factura eliminada', description: 'La factura fue eliminada correctamente.' });
+      navigate('/invoices');
     } catch (err) {
       sileo.error({ title: 'Error al eliminar de FACTUS', description: err.message });
     } finally {

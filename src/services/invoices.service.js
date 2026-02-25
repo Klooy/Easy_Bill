@@ -183,6 +183,7 @@ const invoicesService = {
       .from('invoices')
       .select('*, clients(names, company, identification)')
       .eq('document_type', documentType)
+      .neq('status', 'deleted')
       .order('created_at', { ascending: false });
     if (error) throw error;
     return data;
@@ -192,6 +193,7 @@ const invoicesService = {
     const { data, error } = await supabase
       .from('invoices')
       .select('*, clients(names, company, identification)')
+      .neq('status', 'deleted')
       .order('created_at', { ascending: false });
     if (error) throw error;
     return data;
@@ -241,7 +243,8 @@ const invoicesService = {
   async getFiltered({ search = '', status = '', dateFrom = '', dateTo = '', documentType = '' } = {}) {
     let query = supabase
       .from('invoices')
-      .select('*, clients(names, company, identification)');
+      .select('*, clients(names, company, identification)')
+      .neq('status', 'deleted');
 
     if (status) {
       query = query.eq('status', status);

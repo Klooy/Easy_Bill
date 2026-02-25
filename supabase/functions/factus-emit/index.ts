@@ -172,7 +172,7 @@ serve(async (req: Request) => {
     }
 
     // FACTUS expects payment_form as a string, not an object
-    if (invoice.payment_form_code === '2') {
+    if (String(invoice.payment_form_code) === '2') {
       factusPayload.payment_form = '2';
       if (invoice.payment_due_date) {
         factusPayload.payment_due_date = invoice.payment_due_date;
@@ -184,6 +184,7 @@ serve(async (req: Request) => {
     const factusUrl = getFactusApiUrl();
 
     console.log('[factus-emit] Emitting draft', invoice_id, 'to FACTUS');
+    console.log('[factus-emit] Payload:', JSON.stringify(factusPayload, null, 2));
 
     const sendToFactus = async () => {
       const resp = await fetch(`${factusUrl}/v1/bills/validate`, {
@@ -282,6 +283,7 @@ serve(async (req: Request) => {
           field_errors: fieldErrors.length > 0 ? fieldErrors : undefined,
           factus_status: factusResponse.status,
           factus_response: factusResult,
+          sent_payload: factusPayload,
         }),
         {
           status: factusResponse.status,
