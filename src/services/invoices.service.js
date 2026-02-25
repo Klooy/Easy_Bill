@@ -232,6 +232,7 @@ const invoicesService = {
     const { data, error } = await supabase
       .from('invoices')
       .select('id, number, reference_code, status, total, created_at, clients(names, company)')
+      .neq('status', 'deleted')
       .order('created_at', { ascending: false })
       .limit(limit);
     if (error) throw error;
@@ -242,6 +243,7 @@ const invoicesService = {
     const { data, error } = await supabase
       .from('invoices')
       .select('*, clients(names, company, identification)')
+      .neq('status', 'deleted')
       .or(`number.ilike.%${query}%,reference_code.ilike.%${query}%`)
       .order('created_at', { ascending: false });
     if (error) throw error;
