@@ -15,7 +15,7 @@ import { useProducts } from '@/hooks/useProducts';
 import { useNumberingRanges } from '@/hooks/useNumberingRanges';
 import { useDebounce } from '@/hooks/useDebounce';
 import { recurringService } from '@/services/recurring.service';
-import { PAYMENT_FORMS, PAYMENT_METHODS } from '@/lib/schemas/invoice.schema';
+import { PAYMENT_FORMS, PAYMENT_METHODS, getMethodsForForm } from '@/lib/schemas/invoice.schema';
 import { recurringSchema, FREQUENCIES } from '@/lib/schemas/recurring.schema';
 import { formatCurrency } from '@/lib/format';
 import { selectClass, DEFAULT_ITEM, TAX_RATES } from '@/lib/constants';
@@ -64,6 +64,16 @@ const RecurringFormPage = () => {
   const { fields, append, remove } = useFieldArray({ control, name: 'items' });
   const watchedItems = watch('items');
   const watchedNextRun = watch('next_run_date');
+  const watchedForm = watch('payment_form_code');
+
+  // Cuando cambia la forma de pago, validar que el método actual sea compatible
+  useEffect(() => {
+    const validMethods = getMethodsForForm(watchedForm);
+    const currentMethod = watch('payment_method_code');
+    if (!validMethods.some((m) => m.code === currentMethod)) {
+      setValue('payment_method_code', validMethods[0]?.code || '10');
+    }
+  }, [watchedForm]);
 
   useEffect(() => {
     searchClients(debouncedSearch);
@@ -248,7 +258,7 @@ const RecurringFormPage = () => {
           <div className="space-y-2">
             <Label>Método de pago</Label>
             <select className={selectClass} {...register('payment_method_code')}>
-              {PAYMENT_METHODS.map((p) => (
+              {getMethodsForForm(watchedForm).map((p) => (
                 <option key={p.code} value={p.code}>{p.label}</option>
               ))}
             </select>

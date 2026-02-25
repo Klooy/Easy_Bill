@@ -14,6 +14,15 @@ const PAYMENT_METHODS = [
   { code: 'ZZZ', label: 'Otro' },
 ];
 
+// Métodos válidos según la forma de pago seleccionada
+const CONTADO_METHODS = ['10', '42', '47', '48', '49', 'ZZZ'];
+const CREDITO_METHODS = ['42', '47', '48', 'ZZZ'];
+
+const getMethodsForForm = (formCode) => {
+  const allowed = formCode === '2' ? CREDITO_METHODS : CONTADO_METHODS;
+  return PAYMENT_METHODS.filter((m) => allowed.includes(m.code));
+};
+
 const invoiceItemSchema = z.object({
   product_id: z.string().optional(),
   code_reference: z.string().min(1, 'Código requerido'),
@@ -38,4 +47,4 @@ const invoiceSchema = z.object({
   items: z.array(invoiceItemSchema).min(1, 'Agrega al menos un ítem'),
 });
 
-export { invoiceSchema, invoiceItemSchema, PAYMENT_FORMS, PAYMENT_METHODS };
+export { invoiceSchema, invoiceItemSchema, PAYMENT_FORMS, PAYMENT_METHODS, getMethodsForForm };

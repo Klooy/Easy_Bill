@@ -171,10 +171,9 @@ serve(async (req: Request) => {
       factusPayload.numbering_range_id = parseInt(range.factus_id);
     }
 
+    // FACTUS expects payment_form as a string, not an object
     if (invoice.payment_form_code === '2') {
-      factusPayload.payment_form = {
-        payment_form_code: '2',
-      };
+      factusPayload.payment_form = '2';
       if (invoice.payment_due_date) {
         factusPayload.payment_due_date = invoice.payment_due_date;
       }

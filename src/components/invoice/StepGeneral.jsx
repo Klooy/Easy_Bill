@@ -3,11 +3,31 @@ import { Label } from '@/components/ui/label';
 import { LoadingSpinner } from '@/components/common/LoadingSpinner';
 import { useInvoiceStore } from '@/store/invoice.store';
 import { useNumberingRanges } from '@/hooks/useNumberingRanges';
-import { PAYMENT_FORMS, PAYMENT_METHODS } from '@/lib/schemas/invoice.schema';
+import { PAYMENT_FORMS, getMethodsForForm } from '@/lib/schemas/invoice.schema';
 
 const StepGeneral = () => {
   const { ranges, loading } = useNumberingRanges('invoice');
   const store = useInvoiceStore();
+
+  const availableMethods = getMethodsForForm(store.paymentFormCode);
+
+  const handleFormChange = (newFormCode) => {
+    const updates = { paymentFormCode: newFormCode };
+
+    // Al cambiar de Crédito a Contado, limpiar fecha de vencimiento
+    if (newFormCode === '1') {
+      updates.paymentDueDate = '';
+    }
+
+    // Si el método actual no es válido para la nueva forma, resetear al primero disponible
+    const newMethods = getMethodsForForm(newFormCode);
+    const currentMethodValid = newMethods.some((m) => m.code === store.paymentMethodCode);
+    if (!currentMethodValid) {
+      updates.paymentMethodCode = newMethods[0]?.code || '10';
+    }
+
+    store.setGeneral(updates);
+  };
 
   if (loading) return <LoadingSpinner text="Cargando rangos..." />;
 
@@ -38,7 +58,7 @@ const StepGeneral = () => {
           <select
             className="flex h-10 w-full rounded-input border border-input dark:border-gray-600 bg-background dark:bg-gray-800 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500/15 focus:border-primary-500"
             value={store.paymentFormCode}
-            onChange={(e) => store.setGeneral({ paymentFormCode: e.target.value })}
+            onChange={(e) => handleFormChange(e.target.value)}
           >
             {PAYMENT_FORMS.map((p) => (
               <option key={p.code} value={p.code}>{p.label}</option>
@@ -53,7 +73,7 @@ const StepGeneral = () => {
             value={store.paymentMethodCode}
             onChange={(e) => store.setGeneral({ paymentMethodCode: e.target.value })}
           >
-            {PAYMENT_METHODS.map((p) => (
+            {availableMethods.map((p) => (
               <option key={p.code} value={p.code}>{p.label}</option>
             ))}
           </select>

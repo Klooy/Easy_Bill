@@ -197,11 +197,10 @@ serve(async (req: Request) => {
     }
 
     // Add payment_form only for credit payments (code 2)
+    // FACTUS expects payment_form as a string, not an object
     if (body.payment_form_code === '2') {
-      factusPayload.payment_form = {
-        payment_form_code: '2',
-      };
-      // payment_due_date goes at TOP LEVEL per FACTUS docs, not inside payment_form
+      factusPayload.payment_form = '2';
+      // payment_due_date goes at TOP LEVEL per FACTUS docs
       if (body.payment_due_date) {
         factusPayload.payment_due_date = body.payment_due_date;
       }

@@ -60,7 +60,7 @@ const NewInvoicePage = () => {
       numbering_range_id: store.numberingRangeId,
       payment_form_code: store.paymentFormCode,
       payment_method_code: store.paymentMethodCode,
-      payment_due_date: store.paymentDueDate || null,
+      payment_due_date: store.paymentFormCode === '2' ? (store.paymentDueDate || null) : null,
       observation: store.observation || null,
       items: store.items.filter((i) => i.name).map((item) => ({
         product_id: item.product_id || null,
