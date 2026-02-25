@@ -335,7 +335,7 @@ const invoicesService = {
       supabase.from('clients').select('id', { count: 'exact', head: true }),
       supabase.from('products').select('id', { count: 'exact', head: true }),
       supabase.from('suppliers').select('id', { count: 'exact', head: true }),
-      supabase.from('invoices').select('id', { count: 'exact', head: true }),
+      supabase.from('invoices').select('id', { count: 'exact', head: true }).eq('status', 'issued').eq('document_type', 'invoice'),
       (async () => {
         const { data: { user } } = await supabase.auth.getUser();
         const { data } = await supabase
@@ -347,7 +347,7 @@ const invoicesService = {
       })(),
       supabase.from('clients').select('id', { count: 'exact', head: true }).gte('created_at', monthStart),
       supabase.from('products').select('id', { count: 'exact', head: true }).gte('created_at', monthStart),
-      supabase.from('invoices').select('id', { count: 'exact', head: true }).gte('created_at', monthStart),
+      supabase.from('invoices').select('id', { count: 'exact', head: true }).eq('status', 'issued').eq('document_type', 'invoice').gte('created_at', monthStart),
     ]);
 
     return {

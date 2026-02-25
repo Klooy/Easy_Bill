@@ -226,7 +226,7 @@ const DashboardPage = () => {
 
         {/* Stats Grid — beside the flip card on lg: */}
         <div className="grid grid-cols-2 gap-4">
-          <StatCard icon={FileText} label="Facturas" value={stats?.invoicesCount || 0} delta={stats?.invoicesMonth} accent to="/invoices" />
+          <StatCard icon={FileText} label="Facturas emitidas" value={stats?.invoicesCount || 0} delta={stats?.invoicesMonth} accent to="/invoices" />
           <StatCard icon={Users} label="Clientes" value={stats?.clientsCount || 0} delta={stats?.clientsMonth} to="/clients" />
           <StatCard icon={Package} label="Productos" value={stats?.productsCount || 0} delta={stats?.productsMonth} to="/products" />
           <StatCard icon={Truck} label="Proveedores" value={stats?.suppliersCount || 0} to="/suppliers" />
