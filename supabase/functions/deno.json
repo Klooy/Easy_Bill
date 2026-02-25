@@ -1,0 +1,9 @@
+{
+  "imports": {
+    "supabase-js": "https://esm.sh/@supabase/supabase-js@2",
+    "http/": "https://deno.land/std@0.177.0/http/"
+  },
+  "compilerOptions": {
+    "strict": true
+  }
+}

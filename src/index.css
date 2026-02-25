@@ -1,0 +1,168 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Sileo toast theme — Easy Bill purple (dark mode toasts) */
+:root {
+  --sileo-state-success: #7C3AED;
+  --sileo-state-error: #EF4444;
+  --sileo-state-warning: #F59E0B;
+  --sileo-state-info: #8B5CF6;
+}
+
+body {
+  margin: 0;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background-color: #FAFAFA;
+  color: #111827;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html.dark body {
+  background-color: #030712;
+  color: #F9FAFB;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Prevent horizontal overflow on mobile */
+p, span, h1, h2, h3, h4, h5, h6 {
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+/* ── Custom Scrollbar ── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(124, 58, 237, 0.18);
+  border-radius: 100px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(124, 58, 237, 0.35);
+}
+
+html.dark ::-webkit-scrollbar-thumb {
+  background: rgba(167, 139, 250, 0.2);
+}
+
+html.dark ::-webkit-scrollbar-thumb:hover {
+  background: rgba(167, 139, 250, 0.4);
+}
+
+/* Firefox scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(124, 58, 237, 0.18) transparent;
+}
+
+html.dark * {
+  scrollbar-color: rgba(167, 139, 250, 0.2) transparent;
+}
+
+/* ── Stagger animation delay utilities ── */
+.stagger-1 { animation-delay: 0.05s; }
+.stagger-2 { animation-delay: 0.1s; }
+.stagger-3 { animation-delay: 0.15s; }
+.stagger-4 { animation-delay: 0.2s; }
+.stagger-5 { animation-delay: 0.25s; }
+.stagger-6 { animation-delay: 0.3s; }
+.stagger-7 { animation-delay: 0.35s; }
+.stagger-8 { animation-delay: 0.4s; }
+.stagger-9 { animation-delay: 0.45s; }
+.stagger-10 { animation-delay: 0.5s; }
+.stagger-11 { animation-delay: 0.55s; }
+.stagger-12 { animation-delay: 0.6s; }
+
+/* ── Skeleton shimmer gradient ── */
+.skeleton-shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(124, 58, 237, 0.06) 25%,
+    rgba(124, 58, 237, 0.12) 50%,
+    rgba(124, 58, 237, 0.06) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s linear infinite;
+}
+
+html.dark .skeleton-shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(167, 139, 250, 0.06) 25%,
+    rgba(167, 139, 250, 0.14) 50%,
+    rgba(167, 139, 250, 0.06) 75%
+  );
+  background-size: 200% 100%;
+}
+
+/* ── Card hover gradient border ── */
+.card-interactive {
+  position: relative;
+  overflow: hidden;
+  transition: box-shadow 0.25s ease, transform 0.2s ease;
+}
+
+.card-interactive::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1.5px;
+  background: linear-gradient(135deg, transparent, transparent);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.3s ease, background 0.3s ease;
+  pointer-events: none;
+}
+
+.card-interactive:hover::before {
+  background: linear-gradient(135deg, #7C3AED, #A78BFA, #7C3AED);
+  opacity: 1;
+}
+
+.card-interactive:hover {
+  box-shadow: 0 8px 25px rgba(124, 58, 237, 0.12);
+  transform: translateY(-1px);
+}
+
+html.dark .card-interactive:hover {
+  box-shadow: 0 8px 25px rgba(124, 58, 237, 0.08);
+}
+
+/* ── Page title gradient underline ── */
+.title-accent {
+  position: relative;
+  display: inline-block;
+}
+
+.title-accent::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 40px;
+  height: 3px;
+  border-radius: 100px;
+  background: linear-gradient(90deg, #7C3AED, #A78BFA);
+}
+
+/* Card shine sweep animation */
+@keyframes card-shine {
+  0%, 100% { background-position: 200% 0; }
+  50% { background-position: -50% 0; }
+}
